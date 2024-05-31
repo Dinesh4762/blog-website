@@ -48,6 +48,10 @@ userRouter.post("/signin", async (c) => {
     c.status(403);
     return c.json({ error: "user not found" });
   }
+  if(user.password !== body.password){
+    c.status(403);
+    return c.json({ error: "password is incorrect!" });
+  }
   const token = await sign({ id: user.id }, c.env.JWT_SECRET);
   return c.json({ token });
 });
