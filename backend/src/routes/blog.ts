@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { verify } from "hono/jwt";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
+import { createPostInput,updatePostInput } from "@dinesh4762/common-zod-type";
 
 const blogRouter = new Hono<{
   Bindings: {
@@ -21,24 +22,34 @@ blogRouter.use("/*", async (c, next) => {
     return c.json({ error: "unauthorized" });
   }
   // console.log(jwt)
-  const token = jwt.split(" ")[1];
-  const payload = await verify(token, c.env.JWT_SECRET);
-  if (!payload) {
-    c.status(401);
-    return c.json({ error: "unauthorized" });
+  try {
+    const token = jwt.split(" ")[1];
+    const payload = await verify(token, c.env.JWT_SECRET);
+    if (!payload) {
+      c.status(401);
+      return c.json({ error: "unauthorized" });
+    }
+    // console.log(payload);
+    c.set("userId", String(payload.id));
+    await next();
+  } catch (error) {
+    c.status(411);
+    return c.json({ error: "Sorry, you are not authorised!" });
   }
-  // console.log(payload);
-  c.set("userId", String(payload.id));
-  await next();
 });
 
+// create blog
 blogRouter.post("/", async (c) => {
-  console.log("hello hello");
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
   const { title, content } = await c.req.json();
+  const {success} = createPostInput.safeParse({title,content});
+  if(!success){
+    c.status(400);
+    return c.json({error: "invalid inputs!"})
+  }
   const userId = c.get("userId");
 
   try {
@@ -63,9 +74,13 @@ blogRouter.put("/", async (c) => {
 
   const userId = c.get("userId");
   const { id, title, content } = await c.req.json();
-  // even though content is empty, its not updating to undefined in db
+  const { success } = updatePostInput.safeParse({ id,title, content });
+  if (!success) {
+    c.status(400);
+    return c.json({ error: "invalid inputs!" });
+  }
   try {
-     await prisma.blog.update({
+    await prisma.blog.update({
       where: {
         id: id,
         authorId: userId,
@@ -78,7 +93,7 @@ blogRouter.put("/", async (c) => {
 
     return c.text("updated!");
   } catch (error) {
-    return c.json({error: "Failed to update!"})
+    return c.json({ error: "Failed to update!" });
   }
 });
 
@@ -92,7 +107,7 @@ blogRouter.get("/bulk", async (c) => {
     return c.json({ length: blogs.length, blogs });
   } catch (error) {
     c.status(411);
-    return c.json({error: "Failed to fetch blogs"})
+    return c.json({ error: "Failed to fetch blogs" });
   }
 });
 
