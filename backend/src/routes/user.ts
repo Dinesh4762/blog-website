@@ -17,6 +17,7 @@ userRouter.post("/signup", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  console.log(body);
   const {success} = signupInput.safeParse(body);
   if(!success){
     c.status(400);
@@ -54,6 +55,7 @@ userRouter.post("/signin", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  console.log(body);
   const {success} = signinInput.safeParse(body);
   if(!success){
     c.status(400);  
