@@ -19,7 +19,8 @@ userRouter.post("/signup", async (c) => {
   const body = await c.req.json();
   console.log(body);
   const {success} = signupInput.safeParse(body);
-  if(!success){
+  console.log(success);
+    if(!success){
     c.status(400);
     return c.json({error: "invalid inputs!"})
   }
@@ -45,7 +46,7 @@ userRouter.post("/signup", async (c) => {
     return c.json({ token });
   } catch (error) {
     c.status(403);
-    return c.json({ error: "error ocurred while signing in!" });
+    return c.json({ error: "error ocurred while signing up!" });
   }
 });
 
@@ -79,7 +80,55 @@ userRouter.post("/signin", async (c) => {
     const token = await sign({ id: user.id }, c.env.JWT_SECRET);
     return c.json({ token });
   } catch (error) {
-    
+    console.error(error);
+    c.status(500);
+    c.json({error: "Failed to signin!"})
+  }
+});
+
+// userRouter.put("/", async (c) => {
+  // const prisma = new PrismaClient({
+  //   datasourceUrl: c.env.DATABASE_URL,
+  // }).$extends(withAccelerate());
+
+//   const updatedUsers = await prisma.user.updateMany({
+//     where: {
+//       name: "",
+//     },
+//     data: {
+//       name: "default User",
+//     },
+//   });
+//   console.log(`${updatedUsers.count} users updated.`);
+//   return c.json({ message: "Users updated successfully." });
+// });
+userRouter.get("/", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  try {
+    return c.text("hello hello")
+
+    // const users = await prisma.user.findMany({
+    //   select:{
+    //     email: true,
+    //     password: true,
+    //     name : true
+    //   }
+    // });
+    // return c.json({ count: users.length,users });
+
+    // const user  = await prisma.user.deleteMany({
+    //   where:{
+    //     email: "h@gmail.com"
+    //   }
+    // })
+    // return c.json({user});
+  } catch (error) {
+    console.error(error)
+    c.status(403);
+    return c.json({error})
   }
 });
 

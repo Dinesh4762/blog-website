@@ -1,6 +1,6 @@
 {
   "name": "@dinesh4762/common-zod-type",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "common zod types for both frontend and backend!",
   "main": "./dist/index.js",
   "scripts": {

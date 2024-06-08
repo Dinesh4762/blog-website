@@ -1,12 +1,12 @@
 interface BlogCardInputs {
   authorName: string;
-  publishedDate: string;
+  publishedDate?: string;
   title: string;
   content: string;
 }
 export const BlogCard = ({
   authorName,
-  publishedDate,
+  publishedDate = "3 Jan,2024",
   title,
   content,
 }: BlogCardInputs) => {

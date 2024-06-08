@@ -11,13 +11,14 @@ const blogRouter = new Hono<{
   };
   Variables: {
     userId: string;
-  };
+  };  
 }>();
 
 blogRouter.use("/*", async (c, next) => {
   // console.log("hello")
   const jwt = c.req.header("Authorization") || "";
   if (!jwt) {
+    console.log(jwt);
     c.status(401);
     return c.json({ error: "unauthorized" });
   }
@@ -26,6 +27,7 @@ blogRouter.use("/*", async (c, next) => {
     const token = jwt.split(" ")[1];
     const payload = await verify(token, c.env.JWT_SECRET);
     if (!payload) {
+      console.log(payload)
       c.status(401);
       return c.json({ error: "unauthorized" });
     }
@@ -103,10 +105,22 @@ blogRouter.get("/bulk", async (c) => {
   }).$extends(withAccelerate());
 
   try {
-    const blogs = await prisma.blog.findMany();
+    const blogs = await prisma.blog.findMany({
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
     return c.json({ length: blogs.length, blogs });
   } catch (error) {
-    c.status(411);
+    console.error("Error fetching blogs:", error);
+    c.status(500);
     return c.json({ error: "Failed to fetch blogs" });
   }
 });
@@ -123,13 +137,13 @@ blogRouter.get("/:id", async (c) => {
         id: blogId,
       },
     });
-    if (!blog) {
+    if (!blog) {  
       throw new Error("404 Blog NOT FOUND!");
     }
     return c.json({ blog });
-  } catch (error: any) {
-    c.status(404);
-    return c.json({ error: error.message });
+  } catch (error) {
+    c.status(411);
+    return c.json({ error});
   }
 });
 

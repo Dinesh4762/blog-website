@@ -1,39 +1,20 @@
 import { BlogCard } from "../components/BlogCard";
+import { useBlogs } from "../hooks";
+import { Loader } from "../components/Loader";
 
 export const Blogs = () => {
+    const {loading, blogs} = useBlogs();
+    if(loading){
+        return <div className="w-full h-svh flex items-center justify-center">
+            <Loader color="black"/>
+        </div>
+    }
   return (
     <div className="max-w-xl mx-auto px-4">
       <div className="">
-        <BlogCard
-          authorName="Dinesh Kumar"
-          publishedDate=" Jan 3,2024"
-          title="Adult Average Reading Speed"
-          content="The average reader can read 238 words per minute (WPM) while reading silently. When reading aloud, the average reader can read 183 words per minute (WPM). Previously, it had been thought that the average adult reads at a rate of 300 words per minute."
-        />
-        <BlogCard
-          authorName="Dinesh Kumar"
-          publishedDate=" Jan 3,2024"
-          title="Adult Average Reading Speed"
-          content="The average reader can read 238 words per minute (WPM) while reading silently. When reading aloud, the average reader can read 183 words per minute (WPM). Previously, it had been thought that the average adult reads at a rate of 300 words per minute."
-        />
-        <BlogCard
-          authorName="Dinesh Kumar"
-          publishedDate=" Jan 3,2024"
-          title="Adult Average Reading Speed"
-          content="The average reader can read 238 words per minute (WPM) while reading silently. When reading aloud, the average reader can read 183 words per minute (WPM). Previously, it had been thought that the average adult reads at a rate of 300 words per minute."
-        />
-        <BlogCard
-          authorName="Dinesh Kumar"
-          publishedDate=" Jan 3,2024"
-          title="Adult Average Reading Speed"
-          content="The average reader can read 238 words per minute (WPM) while reading silently. When reading aloud, the average reader can read 183 words per minute (WPM). Previously, it had been thought that the average adult reads at a rate of 300 words per minute."
-        />
-        <BlogCard
-          authorName="Dinesh Kumar"
-          publishedDate=" Jan 3,2024"
-          title="Adult Average Reading Speed"
-          content="The average reader can read 238 words per minute (WPM) while reading silently. When reading aloud, the average reader can read 183 words per minute (WPM). Previously, it had been thought that the average adult reads at a rate of 300 words per minute."
-        />  
+        {blogs.map((blog, index) => {
+          return <BlogCard key={index} title={blog.title} content={blog.content} authorName={blog.author.name} />;
+        })}
       </div>
     </div>
   );    
