@@ -22,15 +22,24 @@ export const BlogCard = ({
       <div className="text-xl font-bold text-wrap mt-2">{title}</div>
       <div className="text-wrap text-base">{content.slice(0, 100)}...</div>
       <div className="text-gray-400 mt-3">
-        {`${Math.ceil(content.split(" ").length / 100)} min read`}</div>
+        {`${Math.ceil(content.split(" ").length / 100)} min read`}
+      </div>
     </div>
   );
 };
 
-function Avatar({ authorName }: { authorName: string }) {
+export function Avatar({
+  authorName,
+  custom = "w-5 h-5 bg-green-600",
+}: {
+  authorName: string | null;
+  custom?: string;
+}) {
   return (
-    <div className="w-5 h-5 p-3 rounded-full bg-green-600 grid place-content-center">
-      <span className="font-medium text-white">{authorName.split("")[0]}</span>
+    <div
+      className={`${custom} p-3 rounded-full  grid place-content-center`}
+    >
+      <span className="font-medium text-white">{authorName?.split("")[0]}</span>
     </div>
   );
 }

@@ -28,6 +28,7 @@ export const AuthForm = ({type} : {type: string}) => {
       .then((res) => {
         setLoading(false);
         localStorage.setItem("token",res.data.token);
+        localStorage.setItem("name", res.data.name);
         // alert("successful")
         navigate("/blogs");
       }).catch((e)=>{

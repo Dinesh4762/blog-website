@@ -43,7 +43,7 @@ userRouter.post("/signup", async (c) => {
     });
 
     const token = await sign({ id: user.id }, c.env.JWT_SECRET);
-    return c.json({ token });
+    return c.json({ token , name: body.name });
   } catch (error) {
     c.status(403);
     return c.json({ error: "error ocurred while signing up!" });
@@ -67,6 +67,11 @@ userRouter.post("/signin", async (c) => {
       where: {
         email: body.email,
       },
+      select:{
+        id:true,
+        name: true,
+        password: true
+      }
     });
 
     if (!user) {
@@ -78,7 +83,7 @@ userRouter.post("/signin", async (c) => {
       return c.json({ error: "password is incorrect!" });
     }
     const token = await sign({ id: user.id }, c.env.JWT_SECRET);
-    return c.json({ token });
+    return c.json({ token, name: user.name });
   } catch (error) {
     console.error(error);
     c.status(500);
