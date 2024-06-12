@@ -60,7 +60,7 @@ blogRouter.post("/", async (c) => {
         title,
         content,
         authorId: userId,
-      },
+      }, 
     });
     return c.json({ id: blog.id });
   } catch (error) {
@@ -136,6 +136,16 @@ blogRouter.get("/:id", async (c) => {
       where: {
         id: blogId,
       },
+      select:{
+        id:true,
+        title: true,
+        content: true,
+        author:{
+          select:{
+            name: true
+          }
+        }
+      }
     });
     if (!blog) {  
       throw new Error("404 Blog NOT FOUND!");

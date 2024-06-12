@@ -6,6 +6,6 @@ export const Loader = ({color}: {color?: string}) =>{
         src={loader}
         alt="loading"
         className={`mx-auto my-auto ${color ? "w-6 h-6" : "invert w-4 h-4"} `}
-      />
+      />  
     );
 }

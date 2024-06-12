@@ -1,17 +1,25 @@
+import { useNavigate } from "react-router-dom";
+
 interface BlogCardInputs {
+  id: string
   authorName: string;
   publishedDate?: string;
   title: string;
   content: string;
 }
 export const BlogCard = ({
+  id,
   authorName,
   publishedDate = "3 Jan,2024",
   title,
   content,
 }: BlogCardInputs) => {
+  const navigate = useNavigate();
   return (
-    <div className="flex flex-col py-4 px-2 border-b border-b-gray-300">
+    <div className=" cursor-pointer flex flex-col py-4 px-2 border-b border-b-gray-300"
+    onClick={()=>{
+      navigate(`/blog/${id}`)
+    }}>
       <div className="flex items-center">
         <Avatar authorName={authorName} />
         <span className="px-2">{authorName}</span>
