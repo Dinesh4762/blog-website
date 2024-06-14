@@ -6,6 +6,7 @@ export interface Blog {
   id: string;
   title: string;
   content: string;
+  published: boolean;
   author: {
     name: string;
   };
@@ -27,7 +28,7 @@ export const useBlog = ({ id }: { id: string | undefined }) => {
       })
       .catch((e) => {
         setLoading(false);
-        console.error(e);
+        console.error(e); 
       });
   }, [id]);
 
@@ -56,3 +57,4 @@ export const useBlogs = () => {
 
   return { loading, blogs };
 };
+

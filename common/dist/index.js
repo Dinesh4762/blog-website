@@ -15,6 +15,7 @@ exports.signinInput = zod_1.default.object({
     password: zod_1.default.string(),
 });
 exports.createPostInput = zod_1.default.object({
+    id: zod_1.default.string(),
     title: zod_1.default.string(),
     content: zod_1.default.string(),
 });
@@ -22,4 +23,5 @@ exports.updatePostInput = zod_1.default.object({
     id: zod_1.default.string(),
     title: zod_1.default.string().optional(),
     content: zod_1.default.string().optional(),
+    published: zod_1.default.boolean().optional()
 });

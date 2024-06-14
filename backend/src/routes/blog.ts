@@ -46,8 +46,8 @@ blogRouter.post("/", async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  const { title, content } = await c.req.json();
-  const {success} = createPostInput.safeParse({title,content});
+  const { id,title, content } = await c.req.json();
+  const {success} = createPostInput.safeParse({id,title,content});
   if(!success){
     c.status(400);
     return c.json({error: "invalid inputs!"})
@@ -57,6 +57,7 @@ blogRouter.post("/", async (c) => {
   try {
     const blog = await prisma.blog.create({
       data: {
+        id,
         title,
         content,
         authorId: userId,
@@ -75,9 +76,14 @@ blogRouter.put("/", async (c) => {
   }).$extends(withAccelerate());
 
   const userId = c.get("userId");
-  const { id, title, content } = await c.req.json();
-  const { success } = updatePostInput.safeParse({ id,title, content });
-  if (!success) {
+  const { id, title, content, published } = await c.req.json();
+  const { success } = updatePostInput.safeParse({
+    id,
+    title,
+    content,
+    published
+  });
+  if (!success) { 
     c.status(400);
     return c.json({ error: "invalid inputs!" });
   }
@@ -90,6 +96,7 @@ blogRouter.put("/", async (c) => {
       data: {
         title,
         content,
+        published
       },
     });
 
@@ -110,6 +117,7 @@ blogRouter.get("/bulk", async (c) => {
         id: true,
         title: true,
         content: true,
+        published:true,
         author: {
           select: {
             name: true,
@@ -140,6 +148,7 @@ blogRouter.get("/:id", async (c) => {
         id:true,
         title: true,
         content: true,
+        published:true,
         author:{
           select:{
             name: true

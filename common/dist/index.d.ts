@@ -25,12 +25,15 @@ export declare const signinInput: z.ZodObject<{
 }>;
 export type SigninType = z.infer<typeof signinInput>;
 export declare const createPostInput: z.ZodObject<{
+    id: z.ZodString;
     title: z.ZodString;
     content: z.ZodString;
 }, "strip", z.ZodTypeAny, {
+    id: string;
     title: string;
     content: string;
 }, {
+    id: string;
     title: string;
     content: string;
 }>;
@@ -39,13 +42,16 @@ export declare const updatePostInput: z.ZodObject<{
     id: z.ZodString;
     title: z.ZodOptional<z.ZodString>;
     content: z.ZodOptional<z.ZodString>;
+    published: z.ZodOptional<z.ZodBoolean>;
 }, "strip", z.ZodTypeAny, {
     id: string;
     title?: string | undefined;
     content?: string | undefined;
+    published?: boolean | undefined;
 }, {
     id: string;
     title?: string | undefined;
     content?: string | undefined;
+    published?: boolean | undefined;
 }>;
 export type UpdatePostType = z.infer<typeof updatePostInput>;

@@ -16,6 +16,7 @@ export const signinInput = z.object({
 export type SigninType = z.infer<typeof signinInput>;
 
 export const createPostInput = z.object({
+  id: z.string(),
   title: z.string(),
   content: z.string(),
 });
@@ -26,6 +27,7 @@ export const updatePostInput = z.object({
   id: z.string(),  
   title: z.string().optional(),
   content: z.string().optional(),
+  published: z.boolean().optional()
 });
 
 export type UpdatePostType = z.infer<typeof updatePostInput>;

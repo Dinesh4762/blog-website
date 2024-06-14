@@ -1,17 +1,21 @@
+import { Loader } from "./Loader";
+
 export const GreenActionButton = ({
   label,
   onClick,
+  loading
 }: {
   label: string;
   onClick: () => void;
+  loading: Boolean
 }) => {
   return (
     <button
       type="button"
-      className="text-white flex items-center justify-center gap-1 bg-green-600 hover:bg-green-800 focus:outline-none font-medium rounded-full text-sm px-4 py-1 ml-auto mr-6"
+      className={`text-white flex items-center justify-center gap-1 bg-green-600 hover:bg-green-800 focus:outline-none font-medium rounded-full text-sm px-3 py-1 ${label === "Create" ? "max-[500px]:p-2": null} mr-6 max-[500px]:mr-3`}
       onClick={onClick}
     >
-      {label === "Create" ? (
+      {!loading && label === "Create" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -28,7 +32,7 @@ export const GreenActionButton = ({
         </svg>
       ) : null}
       <span className={`${label === "Create" ? "max-[500px]:hidden" : ""}`}>
-        {label}
+        {loading ? <Loader /> : label}
       </span>
     </button>
   );
