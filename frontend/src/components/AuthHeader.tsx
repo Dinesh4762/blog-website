@@ -12,7 +12,7 @@ export const AuthHeader = ({ type }: { type: string }) => {
           : "Create an account?"}{" "}
         <Link
           className="underline"
-          to={type === "signup" ? "/signin" : "/signup"}
+          to={type === "signup" ? "/signin" : "/"}
         >
           {type === "signup" ? "Login" : "SignUp"}
         </Link>
