@@ -91,22 +91,6 @@ userRouter.post("/signin", async (c) => {
   }
 });
 
-// userRouter.put("/", async (c) => {
-  // const prisma = new PrismaClient({
-  //   datasourceUrl: c.env.DATABASE_URL,
-  // }).$extends(withAccelerate());
-
-//   const updatedUsers = await prisma.user.updateMany({
-//     where: {
-//       name: "",
-//     },
-//     data: {
-//       name: "default User",
-//     },
-//   });
-//   console.log(`${updatedUsers.count} users updated.`);
-//   return c.json({ message: "Users updated successfully." });
-// });
 userRouter.get("/", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,

@@ -11,7 +11,7 @@ export const Appbar = ({
 }) => {
   const name: string | null = localStorage.getItem("name");
   return (
-    <nav className="sticky top-0 flex items-center px-10 max-[500px]:px-5 py-3 border-b">
+    <nav className="sticky top-0 bg-white flex items-center px-10 max-[500px]:px-5 py-3 border-b">
       <Link
         to="/blogs"
         className="cursor-pointer font-mono font-semibold text-2xl md:ml-28"
