@@ -7,7 +7,7 @@ export const GreenActionButton = ({
 }: {
   label: string;
   onClick: () => void;
-  loading: Boolean
+  loading: boolean
 }) => {
   return (
     <button

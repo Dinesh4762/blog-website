@@ -13,7 +13,7 @@ import { CreatePostType } from "@dinesh4762/common-zod-type";
 export const Blog = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [buttonLoading, setButtonLoading] = useState<Boolean>(false);
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   const { loading, blog } = useBlog({ id });
   if (loading) {
     return (

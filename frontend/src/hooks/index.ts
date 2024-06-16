@@ -34,27 +34,27 @@ export const useBlog = ({ id }: { id: string | undefined }) => {
 
   return { loading, blog };
 };
-export const useBlogs = () => {
+export const useBlogs = (path : string) => {
   const [loading, setLoading] = useState(true);
   const [blogs, setblogs] = useState<Blog[]>([]);
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/api/v1/blog/bulk`, {
+      .get(`${BACKEND_URL}/api/v1/blog/${path}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
       .then((res) => {
-        setblogs(res.data.blogs);
         setLoading(false);
+        setblogs(res.data.blogs);
       })
       .catch((e) => {
         setLoading(false);
         console.error(e);
+        alert(e?.response?.data?.error);
       });
-  }, []);
+  }, [path]);
 
-  return { loading, blogs };
-};
-
+      return { loading, blogs}
+}

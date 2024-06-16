@@ -4,9 +4,9 @@ import { ReactNode } from "react";
 
 export const Appbar = ({
   children,
-  saving,
+  saving
 }: {
-  children: ReactNode;
+  children?: ReactNode;
   saving?: boolean;
 }) => {
   const name: string | null = localStorage.getItem("name");
@@ -19,7 +19,10 @@ export const Appbar = ({
         Pedium
       </Link>
       {saving !== undefined && (
-        <span title="in synq with backend" className="flex items-center text-[#a39e9e] text-sm gap-1 ml-4">
+        <span
+          title="in synq with backend"
+          className="flex items-center text-[#a39e9e] text-sm gap-1 ml-4"
+        >
           {saving ? (
             "...Saving"
           ) : (

@@ -11,7 +11,7 @@ export const Publish = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [buttonLoading, setButtonLoading] = useState<Boolean>(false);
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   const { loading, blog } = useBlog({ id });
   const [saving, setSaving] = useState(false);
   const titleRef = useRef<HTMLDivElement>(null);

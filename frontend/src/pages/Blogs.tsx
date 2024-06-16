@@ -13,8 +13,8 @@ import { BlogsWrapper } from "../components/BlogsWrapper";
 
 export const Blogs = () => {
   const navigate = useNavigate();
-  const { loading, blogs } = useBlogs();
-  const [buttonLoading, setButtonLoading] = useState<Boolean>(false);
+  const { loading, blogs } = useBlogs("bulk");
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   if (loading) {
     return (
       <div className="w-full h-svh flex items-center justify-center">
@@ -22,7 +22,7 @@ export const Blogs = () => {
       </div>
     );
   }
-  if (!blogs) {
+  if (blogs.length === 0) {
     return <div>Sorry, No blogs been created yet!</div>;
   }
   function onCreate() {
@@ -64,7 +64,9 @@ export const Blogs = () => {
           return (
             <BlogCard
               key={index}
-              id={blog.id}
+              onClick={() => {
+                navigate(`/blog/${blog.id}`);
+              }}
               title={blog.title}
               content={blog.content}
               authorName={blog.author.name}

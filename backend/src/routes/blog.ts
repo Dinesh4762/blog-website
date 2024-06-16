@@ -89,9 +89,9 @@ blogRouter.put("/", async (c) => {
   }
   try {
     await prisma.blog.update({
-      where: {
+      where:{
         id: id,
-        authorId: userId,
+        authorId: userId
       },
       data: {
         title,
@@ -113,11 +113,14 @@ blogRouter.get("/bulk", async (c) => {
 
   try {
     const blogs = await prisma.blog.findMany({
+      where: {
+        published: true,
+      },
       select: {
         id: true,
         title: true,
         content: true,
-        published:true,
+        published: true,
         author: {
           select: {
             name: true,
@@ -163,6 +166,37 @@ blogRouter.get("/:id", async (c) => {
   } catch (error) {
     c.status(411);
     return c.json({ error});
+  }
+});
+blogRouter.get("/drafts", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  try {
+    const userId = c.get("userId");
+    const blogs = await prisma.blog.findMany({
+      where: {
+        authorId: userId,
+        published: false,
+      },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        published: true,
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    return c.json({ length: blogs.length, blogs });
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    c.status(500);
+    return c.json({ error: "Failed to fetch blogs" });
   }
 });
 
